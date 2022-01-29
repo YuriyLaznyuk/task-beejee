@@ -15,7 +15,7 @@
 
     },
     "include": [
-      "client/src",
+      "src",
       "@types/custom.d.ts"],
     "files":["./@types/images.d.ts"]
 }
