@@ -11,11 +11,9 @@ interface Config extends Configuration {
 }
 
 const config: Config = {
-	// mode: "development",
 	entry: './src/index.tsx',
 	output: {
 		path: path.resolve(__dirname, 'build'),
-		// filename: "[name].[contenthash].js",
 		filename: 'index.bundle.js',
 		publicPath: '/',
 	},
@@ -42,7 +40,6 @@ const config: Config = {
 			},
 			{
 				test: /\.(?:ico|gif|png|jpg|jpeg|)$/i,
-				// use:["file-loader"],
 				type: 'asset/resource',
 			},
 			{
@@ -76,7 +73,6 @@ const config: Config = {
 		new ESLintPlugin({
 			extensions: ['js', 'jsx', 'ts', 'tsx'],
 		}),
-		// new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin(),
 	],
 
