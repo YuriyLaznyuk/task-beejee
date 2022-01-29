@@ -1,0 +1,47 @@
+.taskList {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	&__sort {
+		&-button {
+			margin: 10px;
+			cursor: pointer;
+		}
+	}
+	&__admin {
+		margin: 10px 0 20px 0;
+		&-button {
+			cursor: pointer;
+			padding: 5px 10px;
+		}
+	}
+	&__task {
+		width: 300px;
+		margin: 0 0 20px 0;
+		border: 1px solid;
+		padding: 10px;
+		&-edit {
+			display: flex;
+			justify-content: flex-end;
+			&-button {
+				cursor: pointer;
+			}
+		}
+	}
+	&__totalPage {
+		margin: 0 0 10px 0;
+	}
+	&__pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		&-arrow {
+			cursor: pointer;
+		}
+
+		&-current {
+			margin: 0 20px;
+		}
+	}
+}
