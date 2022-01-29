@@ -10,7 +10,7 @@ const App = () => {
 	const {currentPage} = useSelector((state: RootState) => state.tasks);
 	useEffect(() => {
 		fetchTasks(currentPage);
-	}, []);
+	}, [currentPage]);
 	return (
 		<div className='app'>
 			<h1>Hello world</h1>

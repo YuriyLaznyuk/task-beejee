@@ -15,6 +15,8 @@ export interface TaskState {
 
 export enum TaskActionType {
 	FETCH_TASK = 'FETCH_TASK',
+	INCREMENT_PAGE = 'INCREMENT_PAGE',
+	DECREMENT_PAGE = 'DECREMENT_PAGE',
 }
 
 export type FetchTask = {
@@ -25,4 +27,12 @@ export type FetchTask = {
 	};
 };
 
-export type TaskAction = FetchTask;
+export type IncrementPage = {
+	type: TaskActionType.INCREMENT_PAGE;
+};
+
+export type DecrementPage = {
+	type: TaskActionType.DECREMENT_PAGE;
+};
+
+export type TaskAction = FetchTask | IncrementPage | DecrementPage;

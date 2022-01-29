@@ -20,3 +20,21 @@ export const fetchTasks =
 			console.log((e as Error).message);
 		}
 	};
+export const incrementPage =
+	(currentPage: number, totalPage: number) =>
+	(dispatch: Dispatch<TaskAction>) => {
+		if (currentPage === totalPage) {
+			return;
+		} else {
+			dispatch({type: TaskActionType.INCREMENT_PAGE});
+		}
+	};
+
+export const decrementPage =
+	(currentPage: number) => (dispatch: Dispatch<TaskAction>) => {
+		if (currentPage === 1) {
+			return;
+		} else {
+			dispatch({type: TaskActionType.DECREMENT_PAGE});
+		}
+	};

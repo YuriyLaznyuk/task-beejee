@@ -5,11 +5,13 @@ import {ITask} from '../../types/task';
 import Left from '../../assets/images/back-arrow.svg';
 import Right from '../../assets/images/forward-arrow.svg';
 import './taskList.scss';
+import {useAction} from '../../hooks/useAction';
 
 const TaskList = () => {
 	const {tasks, currentPage, totalPage} = useSelector(
 		(state: RootState) => state.tasks,
 	);
+	const {incrementPage, decrementPage} = useAction();
 	const showList = (tasks: ITask[]) => {
 		return tasks.length > 0 ? (
 			tasks.map((task) => (
@@ -49,11 +51,11 @@ const TaskList = () => {
 			</div>
 			<div className='taskList__pagination'>
 				<div className='taskList__pagination-arrow'>
-					<Left />
+					<Left onClick={() => decrementPage(currentPage)} />
 				</div>
 				<div className='taskList__pagination-current'>{currentPage}</div>
 				<div className='taskList__pagination-arrow'>
-					<Right />
+					<Right onClick={() => incrementPage(currentPage, totalPage)} />
 				</div>
 			</div>
 		</div>
