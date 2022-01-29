@@ -1,51 +1,59 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/reducers';
-import {ITask} from '../../types/task';
 import Left from '../../assets/images/back-arrow.svg';
 import Right from '../../assets/images/forward-arrow.svg';
-import './taskList.scss';
 import {useAction} from '../../hooks/useAction';
+import CreateTask from '../CreateTask/CreateTask';
+import {showList} from './taskListLogic';
+import './taskList.scss';
 
 const TaskList = () => {
 	const {tasks, currentPage, totalPage} = useSelector(
 		(state: RootState) => state.tasks,
 	);
-	const {incrementPage, decrementPage} = useAction();
-	const showList = (tasks: ITask[]) => {
-		return tasks.length > 0 ? (
-			tasks.map((task) => (
-				<div className='taskList__task' key={task.id}>
-					<div className='taskList__task-edit'>
-						<button className='taskList__task-edit-button'>Edit</button>
-					</div>
-					<div>
-						<strong>Name:</strong> {task.username}
-					</div>
-					<div>
-						<strong>Email:</strong> {task.email}
-					</div>
-					<div>
-						<strong>Status:</strong> {task.status}
-					</div>
-				</div>
-			))
-		) : (
-			<div>No task</div>
-		);
-	};
+	const {incrementPage, decrementPage, fetchSort} = useAction();
 
 	return (
 		<div className='taskList'>
 			<div className='taskList__sort'>
-				<button className='taskList__sort-button'>Sort by Name</button>
-				<button className='taskList__sort-button'>Sort by Email</button>
-				<button className='taskList__sort-button'>Sort by Status</button>
+				<button
+					onClick={() => fetchSort(currentPage, 'username', 'asc')}
+					className='taskList__sort-button'>
+					username asc
+				</button>
+				<button
+					onClick={() => fetchSort(currentPage, 'username', 'desc')}
+					className='taskList__sort-button'>
+					username desc
+				</button>
+				<button
+					onClick={() => fetchSort(currentPage, 'email', 'asc')}
+					className='taskList__sort-button'>
+					email asc
+				</button>
+				<button
+					onClick={() => fetchSort(currentPage, 'username', 'desc')}
+					className='taskList__sort-button'>
+					email desc
+				</button>
+				<button
+					onClick={() => fetchSort(currentPage, 'status', 'asc')}
+					className='taskList__sort-button'>
+					status asc
+				</button>
+				<button
+					onClick={() => fetchSort(currentPage, 'status', 'desc')}
+					className='taskList__sort-button'>
+					status desc
+				</button>
 			</div>
 			<div className='taskList__admin'>
 				<button className='taskList__admin-button'>ADMIN</button>
 			</div>
 			{showList(tasks)}
+
+			<CreateTask />
 			<div className='taskList__totalPage'>
 				<strong>Total page:</strong> {totalPage}
 			</div>
