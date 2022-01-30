@@ -27,6 +27,9 @@
 				transition: 0.5s;
 			}
 		}
+		&-invalid {
+			color: red;
+		}
 		&-input {
 			margin: 5px;
 			cursor: pointer;
