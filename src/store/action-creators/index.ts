@@ -1,2 +1,3 @@
 import * as taskCreator from './task';
-export default {...taskCreator};
+import * as adminCreator from './admin';
+export default {...taskCreator, ...adminCreator};
