@@ -16,7 +16,7 @@ const TaskList = () => {
 		useSelector((state: RootState) => state.tasks);
 	const {incrementPage, decrementPage, fetchSort, requiredPage, adminModal} =
 		useAction();
-	const {modal} = useSelector((state: RootState) => state.admin);
+	const {modal, isAdmin} = useSelector((state: RootState) => state.admin);
 
 	return (
 		<div className='taskList'>
@@ -72,7 +72,7 @@ const TaskList = () => {
 					ADMIN
 				</button>
 			</div>
-			{showList(tasks)}
+			{showList(tasks, isAdmin)}
 
 			<CreateTask />
 			<div className='taskList__totalPage'>
