@@ -55,6 +55,27 @@ export const fetchSort =
 					totalTask: Number(json.message.total_task_count),
 				},
 			});
+			field === 'username' &&
+				direction === 'desc' &&
+				dispatch({type: TaskActionType.NAME_ASC, payload: true});
+			field === 'username' &&
+				direction === 'asc' &&
+				dispatch({type: TaskActionType.NAME_ASC, payload: false});
+
+			field === 'email' &&
+				direction === 'desc' &&
+				dispatch({type: TaskActionType.EMAIL_ASC, payload: true});
+
+			field === 'email' &&
+				direction === 'asc' &&
+				dispatch({type: TaskActionType.EMAIL_ASC, payload: false});
+
+			field === 'status' &&
+				direction === 'desc' &&
+				dispatch({type: TaskActionType.STATUS_ASC, payload: true});
+			field === 'status' &&
+				direction === 'asc' &&
+				dispatch({type: TaskActionType.STATUS_ASC, payload: false});
 		} catch (e) {
 			console.log((e as Error).message);
 		}
@@ -95,4 +116,9 @@ export const postCreateTask =
 		} catch (e) {
 			console.log((e as Error).message);
 		}
+	};
+
+export const requiredPage =
+	(page: number) => (dispatch: Dispatch<TaskAction>) => {
+		dispatch({type: TaskActionType.REQUIRED_PAGE, payload: page});
 	};

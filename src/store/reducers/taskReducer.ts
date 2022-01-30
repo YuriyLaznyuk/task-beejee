@@ -8,6 +8,9 @@ const initialState: TaskState = {
 	email: '',
 	text: '',
 	username: '',
+	ascEmail: true,
+	ascName: true,
+	ascStatus: true,
 };
 
 export const taskReducer = (state = initialState, action: TaskAction) => {
@@ -39,6 +42,14 @@ export const taskReducer = (state = initialState, action: TaskAction) => {
 				email: action.payload.email,
 				text: action.payload.text,
 			};
+		case TaskActionType.EMAIL_ASC:
+			return {...state, ascEmail: action.payload};
+		case TaskActionType.NAME_ASC:
+			return {...state, ascName: action.payload};
+		case TaskActionType.STATUS_ASC:
+			return {...state, ascStatus: action.payload};
+		case TaskActionType.REQUIRED_PAGE:
+			return {...state, currentPage: action.payload};
 		default:
 			return state;
 	}
