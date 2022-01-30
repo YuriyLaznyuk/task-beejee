@@ -9,14 +9,18 @@ import {useAction} from '../../hooks/useAction';
 import CreateTask from '../CreateTask/CreateTask';
 import {showList} from './taskListLogic';
 import './taskList.scss';
+import AdminModal from '../AdminModal/AdminModal';
 
 const TaskList = () => {
 	const {tasks, currentPage, totalPage, ascName, ascStatus, ascEmail} =
 		useSelector((state: RootState) => state.tasks);
-	const {incrementPage, decrementPage, fetchSort, requiredPage} = useAction();
+	const {incrementPage, decrementPage, fetchSort, requiredPage, adminModal} =
+		useAction();
+	const {modal} = useSelector((state: RootState) => state.admin);
 
 	return (
 		<div className='taskList'>
+			{modal && <AdminModal />}
 			<div className='taskList__sort'>
 				{ascName && (
 					<button
@@ -62,7 +66,11 @@ const TaskList = () => {
 				)}
 			</div>
 			<div className='taskList__admin'>
-				<button className='taskList__admin-button'>ADMIN</button>
+				<button
+					onClick={() => adminModal(true)}
+					className='taskList__admin-button'>
+					ADMIN
+				</button>
 			</div>
 			{showList(tasks)}
 
