@@ -52,3 +52,9 @@ export const adminLogin =
 			});
 		}
 	};
+export const adminLogout = () => (dispatch: Dispatch<AdminAction>) => {
+	dispatch({
+		type: AdminActionType.ADMIN_LOGIN,
+		payload: {isAdmin: false, token: ''},
+	});
+};

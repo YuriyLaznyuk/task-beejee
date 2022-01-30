@@ -11,6 +11,11 @@ const initialState: TaskState = {
 	ascEmail: true,
 	ascName: true,
 	ascStatus: true,
+	initialText: '',
+	editText: '',
+	editStatus: 0,
+	editId: 0,
+	edited: false,
 };
 
 export const taskReducer = (state = initialState, action: TaskAction) => {
@@ -50,6 +55,19 @@ export const taskReducer = (state = initialState, action: TaskAction) => {
 			return {...state, ascStatus: action.payload};
 		case TaskActionType.REQUIRED_PAGE:
 			return {...state, currentPage: action.payload};
+		case TaskActionType.EDIT_TASK:
+			return {
+				...state,
+				editText: action.payload,
+			};
+		case TaskActionType.ACTIVE_ID:
+			return {...state, editId: action.payload};
+		case TaskActionType.INITIAL_TEXT:
+			return {...state, initialText: action.payload};
+		case TaskActionType.EDITED_TASK:
+			return {...state, edited: state.initialText === state.editText};
+		case TaskActionType.EDIT_STATUS:
+			return {...state, editStatus: action.payload};
 		default:
 			return state;
 	}

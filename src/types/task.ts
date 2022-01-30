@@ -22,6 +22,11 @@ export interface TaskState {
 	ascName: boolean;
 	ascEmail: boolean;
 	ascStatus: boolean;
+	editStatus: number;
+	initialText: string;
+	editText: string;
+	editId: number;
+	edited: boolean;
 }
 
 export enum TaskActionType {
@@ -34,7 +39,33 @@ export enum TaskActionType {
 	EMAIL_ASC = 'EMAIL_ASC',
 	STATUS_ASC = 'STATUS_ASC',
 	REQUIRED_PAGE = 'REQUIRED_PAGE',
+	EDIT_TASK = 'EDIT_TASK',
+	EDIT_STATUS = 'EDIT_STATUS',
+	ACTIVE_ID = 'ACTIVE_ID',
+	INITIAL_TEXT = 'INITIAL_TEXT',
+	EDITED_TASK = 'EDITED_TASK',
 }
+export type EditStatus = {
+	type: TaskActionType.EDIT_STATUS;
+	payload: number;
+};
+
+export type EditedTask = {
+	type: TaskActionType.EDITED_TASK;
+};
+export type InitialText = {
+	type: TaskActionType.INITIAL_TEXT;
+	payload: string;
+};
+export type ActiveId = {
+	type: TaskActionType.ACTIVE_ID;
+	payload: number;
+};
+
+export type EditTask = {
+	type: TaskActionType.EDIT_TASK;
+	payload: string;
+};
 export type CreateTask = {
 	type: TaskActionType.CREATE_TASK;
 	payload: {
@@ -96,4 +127,9 @@ export type TaskAction =
 	| NameAsc
 	| EmailAsc
 	| StatusAsc
-	| RequiredPage;
+	| RequiredPage
+	| EditTask
+	| ActiveId
+	| InitialText
+	| EditedTask
+	| EditStatus;

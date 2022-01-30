@@ -1,23 +1,73 @@
 import {ITask} from '../../types/task';
 import React from 'react';
+import {postEditedTask} from '../../store/action-creators/task';
 
-export const showList = (tasks: ITask[], isAdmin: boolean) => {
+export const showList = (
+	tasks: ITask[],
+	isAdmin: boolean,
+	activeId: (id: number, text: string, status: number) => void,
+	editId: number,
+	editTask: (text: string) => void,
+	editText: string,
+	editStatus: number,
+	token: string,
+) => {
 	return tasks.length > 0 ? (
 		tasks.map((task) => (
 			<div className='taskList__task' key={task.id}>
 				<div className='taskList__task-edit'>
 					{isAdmin && (
-						<button className='taskList__task-edit-button'>Edit</button>
+						<button
+							onClick={() => activeId(task.id, task.text, task.status)}
+							className='taskList__task-edit-button'>
+							Edit
+						</button>
 					)}
 				</div>
 				<div>
-					<strong>Name:</strong> {task.username}
+					<strong>Name: </strong> {task.username}
 				</div>
 				<div>
-					<strong>Email:</strong> {task.email}
+					<strong>Email: </strong> {task.email}
 				</div>
 				<div>
-					<strong>Status:</strong> {task.status}
+					<strong>Text: </strong>
+					{!isAdmin && task.text}
+					{isAdmin && (
+						<span>
+							{editId !== task.id ? (
+								<span>{task.text}</span>
+							) : (
+								<input
+									onChange={(e) => editTask(e.target.value)}
+									type='text'
+									defaultValue={task.text}
+								/>
+							)}
+						</span>
+					)}
+				</div>
+
+				{isAdmin && (
+					<span>
+						<strong>Status: </strong>
+						<input
+							onChange={(e) => console.log('checked,', e.target.checked)}
+							type='checkbox'
+							// checked={task.status === 10 || task.status === 11}
+						/>
+					</span>
+				)}
+				<div className='taskList__task-edit'>
+					{isAdmin && (
+						<button
+							onClick={() =>
+								postEditedTask(editText, editStatus, token, task.id)
+							}
+							className='taskList__task-edit-button'>
+							Submit
+						</button>
+					)}
 				</div>
 			</div>
 		))

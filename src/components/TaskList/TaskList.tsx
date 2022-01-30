@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/reducers';
 import Left from '../../assets/images/back-arrow.svg';
@@ -8,16 +8,39 @@ import EndArrow from '../../assets/images/keyboard-right.svg';
 import {useAction} from '../../hooks/useAction';
 import CreateTask from '../CreateTask/CreateTask';
 import {showList} from './taskListLogic';
-import './taskList.scss';
 import AdminModal from '../AdminModal/AdminModal';
+import './taskList.scss';
 
 const TaskList = () => {
-	const {tasks, currentPage, totalPage, ascName, ascStatus, ascEmail} =
-		useSelector((state: RootState) => state.tasks);
-	const {incrementPage, decrementPage, fetchSort, requiredPage, adminModal} =
-		useAction();
-	const {modal, isAdmin} = useSelector((state: RootState) => state.admin);
-
+	const {
+		tasks,
+		currentPage,
+		totalPage,
+		ascName,
+		ascStatus,
+		ascEmail,
+		editId,
+		editText,
+		initialText,
+		editStatus,
+	} = useSelector((state: RootState) => state.tasks);
+	const {
+		incrementPage,
+		decrementPage,
+		fetchSort,
+		requiredPage,
+		adminModal,
+		activeId,
+		editTask,
+		editedTask,
+		adminLogout,
+	} = useAction();
+	const {modal, isAdmin, token} = useSelector(
+		(state: RootState) => state.admin,
+	);
+	useEffect(() => {
+		editedTask();
+	}, [editText, initialText]);
 	return (
 		<div className='taskList'>
 			{modal && <AdminModal />}
@@ -66,14 +89,29 @@ const TaskList = () => {
 				)}
 			</div>
 			<div className='taskList__admin'>
-				<button
-					onClick={() => adminModal(true)}
-					className='taskList__admin-button'>
-					ADMIN
-				</button>
+				{!isAdmin && (
+					<button
+						onClick={() => adminModal(true)}
+						className='taskList__admin-button'>
+						ADMIN
+					</button>
+				)}
+				{isAdmin && (
+					<button className='taskList__admin-button' onClick={adminLogout}>
+						LOGOUT
+					</button>
+				)}
 			</div>
-			{showList(tasks, isAdmin)}
-
+			{showList(
+				tasks,
+				isAdmin,
+				activeId,
+				editId,
+				editTask,
+				editText,
+				editStatus,
+				token,
+			)}
 			<CreateTask />
 			<div className='taskList__totalPage'>
 				<strong>Total page:</strong> {totalPage}
@@ -81,15 +119,15 @@ const TaskList = () => {
 			<div className='taskList__pagination'>
 				<div className='taskList__pagination-arrow'>
 					<span title={`page: 1`}>
-						<StartArrow onClick={() => requiredPage(1)} />
+						<Left onClick={() => requiredPage(1)} />
 					</span>
-					<Left onClick={() => decrementPage(currentPage)} />
+					<StartArrow onClick={() => decrementPage(currentPage)} />
 				</div>
 				<div className='taskList__pagination-current'>{currentPage}</div>
 				<div className='taskList__pagination-arrow'>
-					<Right onClick={() => incrementPage(currentPage, totalPage)} />
+					<EndArrow onClick={() => incrementPage(currentPage, totalPage)} />
 					<span title={`page :${totalPage}`}>
-						<EndArrow onClick={() => requiredPage(totalPage)} />
+						<Right onClick={() => requiredPage(totalPage)} />
 					</span>
 				</div>
 			</div>
