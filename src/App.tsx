@@ -6,10 +6,15 @@ import TaskList from './components/TaskList/TaskList';
 import './app.scss';
 
 const App = () => {
-	const {fetchTasks} = useAction();
-	const {currentPage} = useSelector((state: RootState) => state.tasks);
+	const {fetchTasks, adminAuth} = useAction();
+	const {currentPage, sortDirection, sortField} = useSelector(
+		(state: RootState) => state.tasks,
+	);
 	useEffect(() => {
-		fetchTasks(currentPage);
+		if (localStorage.getItem('token')) {
+			adminAuth();
+		}
+		fetchTasks(currentPage, sortField, sortDirection);
 	}, [currentPage]);
 	return (
 		<div className='app'>

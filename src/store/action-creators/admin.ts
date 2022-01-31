@@ -23,7 +23,7 @@ export const adminLogin =
 			formData.append('username', username);
 			formData.append('password', password);
 			await $.ajax({
-				url: `https://uxcandy.com/~shapoval/test-task-backend/v2/login?developer=Name`,
+				url: `https://uxcandy.com/~shapoval/test-task-backend/v2/login?developer=yura`,
 				crossDomain: true,
 				method: 'POST',
 				mimeType: 'multipart/form-data',
@@ -33,6 +33,7 @@ export const adminLogin =
 				dataType: 'json',
 				success: (data) => {
 					console.log(data);
+					localStorage.setItem('token', data.message.token);
 					dispatch({
 						type: AdminActionType.ADMIN_LOGIN,
 						payload: {isAdmin: true, token: data.message.token},
@@ -53,8 +54,17 @@ export const adminLogin =
 		}
 	};
 export const adminLogout = () => (dispatch: Dispatch<AdminAction>) => {
+	localStorage.removeItem('token');
 	dispatch({
 		type: AdminActionType.ADMIN_LOGIN,
 		payload: {isAdmin: false, token: ''},
+	});
+};
+
+export const adminAuth = () => (dispatch: Dispatch<AdminAction>) => {
+	const token = localStorage.getItem('token');
+	dispatch({
+		type: AdminActionType.ADMIN_LOGIN,
+		payload: {isAdmin: true, token: String(token)},
 	});
 };

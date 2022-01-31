@@ -9,7 +9,6 @@ const CreateTask = () => {
 	const {username, email, text} = useSelector(
 		(state: RootState) => state.tasks,
 	);
-
 	const {addField, postCreateTask} = useAction();
 	return (
 		<div className='createTask'>
