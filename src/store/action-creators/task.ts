@@ -122,3 +122,50 @@ export const requiredPage =
 	(page: number) => (dispatch: Dispatch<TaskAction>) => {
 		dispatch({type: TaskActionType.REQUIRED_PAGE, payload: page});
 	};
+export const activeId =
+	(id: number, text: string, status: number) =>
+	(dispatch: Dispatch<TaskAction>) => {
+		dispatch({type: TaskActionType.ACTIVE_ID, payload: id});
+		dispatch({
+			type: TaskActionType.EDIT_TASK,
+			payload: text,
+		});
+		dispatch({type: TaskActionType.INITIAL_TEXT, payload: text});
+		dispatch({type: TaskActionType.EDIT_STATUS, payload: status});
+	};
+export const editTask =
+	(payload: string) => (dispatch: Dispatch<TaskAction>) => {
+		dispatch({type: TaskActionType.EDIT_TASK, payload});
+	};
+export const editedTask = () => (dispatch: Dispatch<TaskAction>) => {
+	dispatch({type: TaskActionType.EDITED_TASK});
+};
+
+export const postEditedTask = async (
+	text: string,
+	status: number,
+	token: string,
+	id: number,
+) => {
+	const formData = new FormData();
+	formData.append('text', text);
+	formData.append('status', String(status));
+	formData.append('token', token);
+	try {
+		$.ajax({
+			url: `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/${id}?developer=Name`,
+			crossDomain: true,
+			method: 'POST',
+			mimeType: 'multipart/form-data',
+			contentType: false,
+			processData: false,
+			data: formData,
+			dataType: 'json',
+			success: function (data) {
+				console.log(data);
+			},
+		});
+	} catch (e) {
+		console.log('Error ', (e as Error).message);
+	}
+};
