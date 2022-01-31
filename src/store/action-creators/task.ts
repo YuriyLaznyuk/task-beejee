@@ -6,7 +6,7 @@ export const fetchTasks =
 	(page: number) => async (dispatch: Dispatch<TaskAction>) => {
 		try {
 			const response = await fetch(
-				`https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=Name&page=${page}`,
+				`https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}`,
 			);
 
 			const json = await response.json();
@@ -45,7 +45,7 @@ export const fetchSort =
 	async (dispatch: Dispatch<TaskAction>) => {
 		try {
 			const response = await fetch(
-				`https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=Name&page=${page}&sort_field=${field}&sort_direction=${direction}`,
+				`https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}&sort_field=${field}&sort_direction=${direction}`,
 			);
 			const json = await response.json();
 			dispatch({
@@ -97,7 +97,7 @@ export const postCreateTask =
 		formData.append('text', text);
 		try {
 			await $.ajax({
-				url: 'https://uxcandy.com/~shapoval/test-task-backend/v2/create?developer=Example',
+				url: 'https://uxcandy.com/~shapoval/test-task-backend/v2/create?developer=yura',
 				crossDomain: true,
 				method: 'POST',
 				mimeType: 'multipart/form-data',
@@ -183,7 +183,7 @@ export const postEditedTask = async (
 	formData.append('token', token);
 	try {
 		$.ajax({
-			url: `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/${id}?developer=Name`,
+			url: `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/${id}?developer=yura`,
 			crossDomain: true,
 			method: 'POST',
 			mimeType: 'multipart/form-data',

@@ -23,7 +23,7 @@ export const adminLogin =
 			formData.append('username', username);
 			formData.append('password', password);
 			await $.ajax({
-				url: `https://uxcandy.com/~shapoval/test-task-backend/v2/login?developer=Name`,
+				url: `https://uxcandy.com/~shapoval/test-task-backend/v2/login?developer=yura`,
 				crossDomain: true,
 				method: 'POST',
 				mimeType: 'multipart/form-data',
