@@ -2,12 +2,14 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/reducers';
 import {useAction} from '../../hooks/useAction';
+import {validEmail} from './createTaskLogic';
 import './createTask.scss';
 
 const CreateTask = () => {
 	const {username, email, text} = useSelector(
 		(state: RootState) => state.tasks,
 	);
+
 	const {addField, postCreateTask} = useAction();
 	return (
 		<div className='createTask'>
@@ -20,6 +22,9 @@ const CreateTask = () => {
 					type='text'
 					placeholder='username'
 				/>
+				{email.length > 0 && !validEmail(email) && (
+					<span className='createTask__container-valid'>invalid email</span>
+				)}
 				<input
 					className='createTask__container-input'
 					onChange={(e) => addField({username, email: e.target.value, text})}

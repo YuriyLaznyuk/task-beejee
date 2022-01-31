@@ -11,6 +11,8 @@ export const showList = (
 	editText: string,
 	editStatus: number,
 	token: string,
+	isChecked: boolean,
+	changeChecked: () => void,
 ) => {
 	return tasks.length > 0 ? (
 		tasks.map((task) => (
@@ -30,6 +32,11 @@ export const showList = (
 				<div>
 					<strong>Email: </strong> {task.email}
 				</div>
+				{!isAdmin && (
+					<div>
+						<strong>Status: </strong> {task.status}
+					</div>
+				)}
 				<div>
 					<strong>Text: </strong>
 					{!isAdmin && task.text}
@@ -51,21 +58,25 @@ export const showList = (
 				{isAdmin && (
 					<span>
 						<strong>Status: </strong>
-						<input
-							onChange={(e) => console.log('checked,', e.target.checked)}
-							type='checkbox'
-							// checked={task.status === 10 || task.status === 11}
-						/>
+						{editId !== task.id ? (
+							<span>{task.status}</span>
+						) : (
+							<input
+								onChange={() => changeChecked()}
+								type='checkbox'
+								checked={isChecked}
+							/>
+						)}
 					</span>
 				)}
 				<div className='taskList__task-edit'>
-					{isAdmin && (
+					{isAdmin && editId === task.id && (
 						<button
 							onClick={() =>
 								postEditedTask(editText, editStatus, token, task.id)
 							}
 							className='taskList__task-edit-button'>
-							Submit
+							SEND
 						</button>
 					)}
 				</div>
