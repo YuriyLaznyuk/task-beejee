@@ -17,6 +17,8 @@ const initialState: TaskState = {
 	editId: 0,
 	isChecked: false,
 	edited: false,
+	sortDirection: '',
+	sortField: '',
 };
 
 export const taskReducer = (state = initialState, action: TaskAction) => {
@@ -73,6 +75,12 @@ export const taskReducer = (state = initialState, action: TaskAction) => {
 			return {...state, isChecked: !state.isChecked};
 		case TaskActionType.ACTIVE_ID_CHECKED:
 			return {...state, isChecked: action.payload};
+		case TaskActionType.ACTIVE_SORT:
+			return {
+				...state,
+				sortDirection: action.payload.direction,
+				sortField: action.payload.field,
+			};
 		default:
 			return state;
 	}

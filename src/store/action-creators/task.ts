@@ -3,10 +3,16 @@ import {ICreate, TaskAction, TaskActionType} from '../../types/task';
 import $ from 'jquery';
 
 export const fetchTasks =
-	(page: number) => async (dispatch: Dispatch<TaskAction>) => {
+	(page: number, field: string, direction: string) =>
+	async (dispatch: Dispatch<TaskAction>) => {
+		const url =
+			field && direction
+				? `https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}&sort_field=${field}&sort_direction=${direction}`
+				: `https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}`;
 		try {
 			const response = await fetch(
-				`https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}`,
+				// `https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}`,
+				url,
 			);
 
 			const json = await response.json();
@@ -55,6 +61,7 @@ export const fetchSort =
 					totalTask: Number(json.message.total_task_count),
 				},
 			});
+			dispatch({type: TaskActionType.ACTIVE_SORT, payload: {field, direction}});
 			field === 'username' &&
 				direction === 'desc' &&
 				dispatch({type: TaskActionType.NAME_ASC, payload: true});
@@ -112,6 +119,7 @@ export const postCreateTask =
 							`email: ${data.message.email} text: ${data.message.text} username: ${data.message.username}`,
 						);
 					}
+					alert(`Task create: ${data.status}`);
 				},
 			});
 			dispatch({

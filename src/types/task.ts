@@ -28,6 +28,8 @@ export interface TaskState {
 	editId: number;
 	isChecked: boolean;
 	edited: boolean;
+	sortField: string;
+	sortDirection: string;
 }
 
 export enum TaskActionType {
@@ -47,7 +49,16 @@ export enum TaskActionType {
 	EDITED_TASK = 'EDITED_TASK',
 	EDIT_CHECKED = 'EDIT_CHECKED',
 	ACTIVE_ID_CHECKED = 'ACTIVE_ID_CHECKED',
+	ACTIVE_SORT = 'ACTIVE_SORT',
 }
+
+export type ActiveSort = {
+	type: TaskActionType.ACTIVE_SORT;
+	payload: {
+		field: string;
+		direction: string;
+	};
+};
 
 export type ActiveIdChecked = {
 	type: TaskActionType.ACTIVE_ID_CHECKED;
@@ -147,4 +158,5 @@ export type TaskAction =
 	| EditedTask
 	| EditStatus
 	| EditChecked
-	| ActiveIdChecked;
+	| ActiveIdChecked
+	| ActiveSort;
