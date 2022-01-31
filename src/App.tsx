@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-import './app.scss';
 import {useAction} from './hooks/useAction';
 import {useSelector} from 'react-redux';
 import {RootState} from './store/reducers';
 import TaskList from './components/TaskList/TaskList';
+import './app.scss';
 
 const App = () => {
 	const {fetchTasks} = useAction();

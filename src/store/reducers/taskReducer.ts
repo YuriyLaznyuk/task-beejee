@@ -15,6 +15,7 @@ const initialState: TaskState = {
 	editText: '',
 	editStatus: 0,
 	editId: 0,
+	isChecked: false,
 	edited: false,
 };
 
@@ -68,6 +69,10 @@ export const taskReducer = (state = initialState, action: TaskAction) => {
 			return {...state, edited: state.initialText === state.editText};
 		case TaskActionType.EDIT_STATUS:
 			return {...state, editStatus: action.payload};
+		case TaskActionType.EDIT_CHECKED:
+			return {...state, isChecked: !state.isChecked};
+		case TaskActionType.ACTIVE_ID_CHECKED:
+			return {...state, isChecked: action.payload};
 		default:
 			return state;
 	}

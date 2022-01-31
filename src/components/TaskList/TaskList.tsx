@@ -23,6 +23,8 @@ const TaskList = () => {
 		editText,
 		initialText,
 		editStatus,
+		isChecked,
+		edited,
 	} = useSelector((state: RootState) => state.tasks);
 	const {
 		incrementPage,
@@ -34,13 +36,16 @@ const TaskList = () => {
 		editTask,
 		editedTask,
 		adminLogout,
+		changeChecked,
+		changeStatus,
 	} = useAction();
 	const {modal, isAdmin, token} = useSelector(
 		(state: RootState) => state.admin,
 	);
 	useEffect(() => {
 		editedTask();
-	}, [editText, initialText]);
+		changeStatus(isChecked, edited);
+	}, [editText, initialText, isChecked, edited]);
 	return (
 		<div className='taskList'>
 			{modal && <AdminModal />}
@@ -111,6 +116,8 @@ const TaskList = () => {
 				editText,
 				editStatus,
 				token,
+				isChecked,
+				changeChecked,
 			)}
 			<CreateTask />
 			<div className='taskList__totalPage'>

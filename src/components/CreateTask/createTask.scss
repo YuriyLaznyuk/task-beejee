@@ -6,6 +6,9 @@
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
+		&-valid {
+			color: red;
+		}
 		&-input {
 			margin: 0 0 5px 0;
 			cursor: pointer;

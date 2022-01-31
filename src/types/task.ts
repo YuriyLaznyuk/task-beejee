@@ -26,6 +26,7 @@ export interface TaskState {
 	initialText: string;
 	editText: string;
 	editId: number;
+	isChecked: boolean;
 	edited: boolean;
 }
 
@@ -44,7 +45,19 @@ export enum TaskActionType {
 	ACTIVE_ID = 'ACTIVE_ID',
 	INITIAL_TEXT = 'INITIAL_TEXT',
 	EDITED_TASK = 'EDITED_TASK',
+	EDIT_CHECKED = 'EDIT_CHECKED',
+	ACTIVE_ID_CHECKED = 'ACTIVE_ID_CHECKED',
 }
+
+export type ActiveIdChecked = {
+	type: TaskActionType.ACTIVE_ID_CHECKED;
+	payload: boolean;
+};
+
+export type EditChecked = {
+	type: TaskActionType.EDIT_CHECKED;
+};
+
 export type EditStatus = {
 	type: TaskActionType.EDIT_STATUS;
 	payload: number;
@@ -132,4 +145,6 @@ export type TaskAction =
 	| ActiveId
 	| InitialText
 	| EditedTask
-	| EditStatus;
+	| EditStatus
+	| EditChecked
+	| ActiveIdChecked;

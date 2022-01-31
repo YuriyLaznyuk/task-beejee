@@ -107,6 +107,11 @@ export const postCreateTask =
 				dataType: 'json',
 				success: (data) => {
 					console.log(data);
+					if (data.status === 'error') {
+						alert(
+							`email: ${data.message.email} text: ${data.message.text} username: ${data.message.username}`,
+						);
+					}
 				},
 			});
 			dispatch({
@@ -125,6 +130,8 @@ export const requiredPage =
 export const activeId =
 	(id: number, text: string, status: number) =>
 	(dispatch: Dispatch<TaskAction>) => {
+		let checked = false;
+		checked = status === 10 || status == 11;
 		dispatch({type: TaskActionType.ACTIVE_ID, payload: id});
 		dispatch({
 			type: TaskActionType.EDIT_TASK,
@@ -132,14 +139,37 @@ export const activeId =
 		});
 		dispatch({type: TaskActionType.INITIAL_TEXT, payload: text});
 		dispatch({type: TaskActionType.EDIT_STATUS, payload: status});
+		dispatch({type: TaskActionType.ACTIVE_ID_CHECKED, payload: checked});
 	};
 export const editTask =
 	(payload: string) => (dispatch: Dispatch<TaskAction>) => {
 		dispatch({type: TaskActionType.EDIT_TASK, payload});
 	};
+export const changeChecked = () => (dispatch: Dispatch<TaskAction>) => {
+	dispatch({type: TaskActionType.EDIT_CHECKED});
+};
+
 export const editedTask = () => (dispatch: Dispatch<TaskAction>) => {
 	dispatch({type: TaskActionType.EDITED_TASK});
 };
+
+export const changeStatus =
+	(isChecked: boolean, edited: boolean) => (dispatch: Dispatch<TaskAction>) => {
+		let status = 0;
+		if (isChecked === false && edited === false) {
+			status = 1;
+		}
+		if (isChecked === true && edited === false) {
+			status = 11;
+		}
+		if (isChecked === true && edited === true) {
+			status = 10;
+		}
+		if (isChecked === false && edited === true) {
+			status = 0;
+		}
+		dispatch({type: TaskActionType.EDIT_STATUS, payload: status});
+	};
 
 export const postEditedTask = async (
 	text: string,
