@@ -1,6 +1,5 @@
 import {ITask} from '../../types/task';
 import React from 'react';
-// import {postEditedTask} from '../../store/action-creators/task';
 
 export const showList = (
 	tasks: ITask[],
