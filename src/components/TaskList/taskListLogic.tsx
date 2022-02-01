@@ -1,6 +1,6 @@
 import {ITask} from '../../types/task';
 import React from 'react';
-import {postEditedTask} from '../../store/action-creators/task';
+// import {postEditedTask} from '../../store/action-creators/task';
 
 export const showList = (
 	tasks: ITask[],
@@ -10,9 +10,9 @@ export const showList = (
 	editTask: (text: string) => void,
 	editText: string,
 	editStatus: number,
-	token: string,
 	isChecked: boolean,
 	changeChecked: () => void,
+	postEditedTask: (text: string, status: number, id: number) => void,
 ) => {
 	return tasks.length > 0 ? (
 		tasks.map((task) => (
@@ -72,9 +72,7 @@ export const showList = (
 				<div className='taskList__task-edit'>
 					{isAdmin && editId === task.id && (
 						<button
-							onClick={() =>
-								postEditedTask(editText, editStatus, token, task.id)
-							}
+							onClick={() => postEditedTask(editText, editStatus, task.id)}
 							className='taskList__task-edit-button'>
 							SEND
 						</button>

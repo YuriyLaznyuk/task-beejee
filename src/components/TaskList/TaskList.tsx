@@ -38,10 +38,9 @@ const TaskList = () => {
 		adminLogout,
 		changeChecked,
 		changeStatus,
+		postEditedTask,
 	} = useAction();
-	const {modal, isAdmin, token} = useSelector(
-		(state: RootState) => state.admin,
-	);
+	const {modal, isAdmin} = useSelector((state: RootState) => state.admin);
 	useEffect(() => {
 		editedTask();
 		changeStatus(isChecked, edited);
@@ -54,42 +53,42 @@ const TaskList = () => {
 					<button
 						onClick={() => fetchSort(currentPage, 'username', 'asc')}
 						className='taskList__sort-button'>
-						username asc
+						username asc &#9650;
 					</button>
 				)}
 				{!ascName && (
 					<button
 						onClick={() => fetchSort(currentPage, 'username', 'desc')}
 						className='taskList__sort-button'>
-						username desc
+						username desc &#9660;
 					</button>
 				)}
 				{ascEmail && (
 					<button
 						onClick={() => fetchSort(currentPage, 'email', 'asc')}
 						className='taskList__sort-button'>
-						email asc
+						email asc &#9650;
 					</button>
 				)}
 				{!ascEmail && (
 					<button
 						onClick={() => fetchSort(currentPage, 'email', 'desc')}
 						className='taskList__sort-button'>
-						email desc
+						email desc &#9660;
 					</button>
 				)}
 				{ascStatus && (
 					<button
 						onClick={() => fetchSort(currentPage, 'status', 'asc')}
 						className='taskList__sort-button'>
-						status asc
+						status asc &#9650;
 					</button>
 				)}
 				{!ascStatus && (
 					<button
 						onClick={() => fetchSort(currentPage, 'status', 'desc')}
 						className='taskList__sort-button'>
-						status desc
+						status desc &#9660;
 					</button>
 				)}
 			</div>
@@ -115,9 +114,9 @@ const TaskList = () => {
 				editTask,
 				editText,
 				editStatus,
-				token,
 				isChecked,
 				changeChecked,
+				postEditedTask,
 			)}
 			<CreateTask />
 			<div className='taskList__totalPage'>

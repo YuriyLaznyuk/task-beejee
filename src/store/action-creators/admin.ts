@@ -36,7 +36,7 @@ export const adminLogin =
 					localStorage.setItem('token', data.message.token);
 					dispatch({
 						type: AdminActionType.ADMIN_LOGIN,
-						payload: {isAdmin: true, token: data.message.token},
+						payload: true,
 					});
 					dispatch({
 						type: AdminActionType.ADMIN_INPUT,
@@ -47,9 +47,10 @@ export const adminLogin =
 			});
 		} catch (e) {
 			console.log('Error: ', (e as Error).message);
+			localStorage.removeItem('token');
 			dispatch({
 				type: AdminActionType.ADMIN_LOGIN,
-				payload: {isAdmin: false, token: ''},
+				payload: false,
 			});
 		}
 	};
@@ -57,14 +58,13 @@ export const adminLogout = () => (dispatch: Dispatch<AdminAction>) => {
 	localStorage.removeItem('token');
 	dispatch({
 		type: AdminActionType.ADMIN_LOGIN,
-		payload: {isAdmin: false, token: ''},
+		payload: false,
 	});
 };
 
 export const adminAuth = () => (dispatch: Dispatch<AdminAction>) => {
-	const token = localStorage.getItem('token');
 	dispatch({
 		type: AdminActionType.ADMIN_LOGIN,
-		payload: {isAdmin: true, token: String(token)},
+		payload: true,
 	});
 };
