@@ -12,6 +12,7 @@ import AdminModal from '../AdminModal/AdminModal';
 import './taskList.scss';
 
 const TaskList = () => {
+	const page = sessionStorage.getItem('page');
 	const {
 		tasks,
 		currentPage,
@@ -129,7 +130,9 @@ const TaskList = () => {
 					</span>
 					<StartArrow onClick={() => decrementPage(currentPage)} />
 				</div>
-				<div className='taskList__pagination-current'>{currentPage}</div>
+				<div className='taskList__pagination-current'>
+					{page === null ? currentPage : page}
+				</div>
 				<div className='taskList__pagination-arrow'>
 					<EndArrow onClick={() => incrementPage(currentPage, totalPage)} />
 					<span title={`page :${totalPage}`}>

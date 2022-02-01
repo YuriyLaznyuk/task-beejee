@@ -43,8 +43,7 @@ const AdminModal = () => {
 				/>
 				<button
 					onClick={() => adminLogin(username, password)}
-					className='adminModal__container-button'
-					disabled={!(validAdmin(username) && validPassword(password))}>
+					className='adminModal__container-button'>
 					SEND
 				</button>
 			</div>

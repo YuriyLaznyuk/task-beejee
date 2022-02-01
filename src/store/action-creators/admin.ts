@@ -5,6 +5,10 @@ import $ from 'jquery';
 export const adminModal =
 	(payload: boolean) => (dispatch: Dispatch<AdminAction>) => {
 		dispatch({type: AdminActionType.ADMIN_MODAL, payload: payload});
+		dispatch({
+			type: AdminActionType.ADMIN_INPUT,
+			payload: {username: '', password: ''},
+		});
 	};
 export const inputAdmin =
 	({username, password}: IAdminInput) =>
@@ -33,16 +37,27 @@ export const adminLogin =
 				dataType: 'json',
 				success: (data) => {
 					console.log(data);
-					localStorage.setItem('token', data.message.token);
-					dispatch({
-						type: AdminActionType.ADMIN_LOGIN,
-						payload: true,
-					});
-					dispatch({
-						type: AdminActionType.ADMIN_INPUT,
-						payload: {password: '', username: ''},
-					});
-					dispatch({type: AdminActionType.ADMIN_MODAL, payload: false});
+					if (data.status === 'ok') {
+						localStorage.setItem('token', data.message.token);
+						dispatch({
+							type: AdminActionType.ADMIN_LOGIN,
+							payload: true,
+						});
+						dispatch({
+							type: AdminActionType.ADMIN_INPUT,
+							payload: {password: '', username: ''},
+						});
+						dispatch({type: AdminActionType.ADMIN_MODAL, payload: false});
+					}
+					if (data.status === 'error') {
+						const username = data.message.username
+							? `username: ${data.message.username}`
+							: '';
+						const password = data.message.password
+							? `password: ${data.message.password}`
+							: '';
+						alert(`\n ${username} \n ${password}`);
+					}
 				},
 			});
 		} catch (e) {
