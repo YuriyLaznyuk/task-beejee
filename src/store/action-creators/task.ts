@@ -242,6 +242,9 @@ export const postEditedTask =
 						alert(`${data.message.token} \n please log in`);
 						dispatch({type: AdminActionType.ADMIN_LOGIN, payload: false});
 					}
+					if (data.status === 'ok') {
+						alert(`status: OK`);
+					}
 				},
 			});
 		} catch (e) {
