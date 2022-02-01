@@ -14,6 +14,7 @@ export interface ICreate {
 export interface TaskState {
 	tasks: ITask[];
 	totalTask: number;
+	taskEffect: boolean;
 	currentPage: number;
 	totalPage: number;
 	username: string;
@@ -50,7 +51,21 @@ export enum TaskActionType {
 	EDIT_CHECKED = 'EDIT_CHECKED',
 	ACTIVE_ID_CHECKED = 'ACTIVE_ID_CHECKED',
 	ACTIVE_SORT = 'ACTIVE_SORT',
+	TASK_EFFECT = 'TASK_EFFECT',
+	INITIAL_SESSION_STORAGE = 'INITIAL_SESSION_STORAGE',
 }
+
+export type InitialSessionStorage = {
+	type: TaskActionType.INITIAL_SESSION_STORAGE;
+	payload: {
+		field: string;
+		direction: string;
+		page: number;
+		email: boolean;
+		name: boolean;
+		status: boolean;
+	};
+};
 
 export type ActiveSort = {
 	type: TaskActionType.ACTIVE_SORT;
@@ -72,6 +87,9 @@ export type EditChecked = {
 export type EditStatus = {
 	type: TaskActionType.EDIT_STATUS;
 	payload: number;
+};
+export type TaskEffect = {
+	type: TaskActionType.TASK_EFFECT;
 };
 
 export type EditedTask = {
@@ -159,4 +177,6 @@ export type TaskAction =
 	| EditStatus
 	| EditChecked
 	| ActiveIdChecked
-	| ActiveSort;
+	| ActiveSort
+	| TaskEffect
+	| InitialSessionStorage;

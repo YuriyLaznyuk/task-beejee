@@ -5,6 +5,10 @@ import $ from 'jquery';
 export const adminModal =
 	(payload: boolean) => (dispatch: Dispatch<AdminAction>) => {
 		dispatch({type: AdminActionType.ADMIN_MODAL, payload: payload});
+		dispatch({
+			type: AdminActionType.ADMIN_INPUT,
+			payload: {username: '', password: ''},
+		});
 	};
 export const inputAdmin =
 	({username, password}: IAdminInput) =>
@@ -33,23 +37,35 @@ export const adminLogin =
 				dataType: 'json',
 				success: (data) => {
 					console.log(data);
-					localStorage.setItem('token', data.message.token);
-					dispatch({
-						type: AdminActionType.ADMIN_LOGIN,
-						payload: {isAdmin: true, token: data.message.token},
-					});
-					dispatch({
-						type: AdminActionType.ADMIN_INPUT,
-						payload: {password: '', username: ''},
-					});
-					dispatch({type: AdminActionType.ADMIN_MODAL, payload: false});
+					if (data.status === 'ok') {
+						localStorage.setItem('token', data.message.token);
+						dispatch({
+							type: AdminActionType.ADMIN_LOGIN,
+							payload: true,
+						});
+						dispatch({
+							type: AdminActionType.ADMIN_INPUT,
+							payload: {password: '', username: ''},
+						});
+						dispatch({type: AdminActionType.ADMIN_MODAL, payload: false});
+					}
+					if (data.status === 'error') {
+						const username = data.message.username
+							? `username: ${data.message.username}`
+							: '';
+						const password = data.message.password
+							? `password: ${data.message.password}`
+							: '';
+						alert(`\n ${username} \n ${password}`);
+					}
 				},
 			});
 		} catch (e) {
 			console.log('Error: ', (e as Error).message);
+			localStorage.removeItem('token');
 			dispatch({
 				type: AdminActionType.ADMIN_LOGIN,
-				payload: {isAdmin: false, token: ''},
+				payload: false,
 			});
 		}
 	};
@@ -57,14 +73,13 @@ export const adminLogout = () => (dispatch: Dispatch<AdminAction>) => {
 	localStorage.removeItem('token');
 	dispatch({
 		type: AdminActionType.ADMIN_LOGIN,
-		payload: {isAdmin: false, token: ''},
+		payload: false,
 	});
 };
 
 export const adminAuth = () => (dispatch: Dispatch<AdminAction>) => {
-	const token = localStorage.getItem('token');
 	dispatch({
 		type: AdminActionType.ADMIN_LOGIN,
-		payload: {isAdmin: true, token: String(token)},
+		payload: true,
 	});
 };

@@ -1,19 +1,35 @@
 import {Dispatch} from 'redux';
 import {ICreate, TaskAction, TaskActionType} from '../../types/task';
 import $ from 'jquery';
+import {AdminAction, AdminActionType} from '../../types/admin';
 
 export const fetchTasks =
-	(page: number, field: string, direction: string) =>
+	(
+		page: number,
+		field: string,
+		direction: string,
+		email: boolean,
+		name: boolean,
+		status: boolean,
+	) =>
 	async (dispatch: Dispatch<TaskAction>) => {
+		dispatch({
+			type: TaskActionType.INITIAL_SESSION_STORAGE,
+			payload: {
+				page,
+				direction,
+				field,
+				email,
+				name,
+				status,
+			},
+		});
 		const url =
 			field && direction
 				? `https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}&sort_field=${field}&sort_direction=${direction}`
 				: `https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}`;
 		try {
-			const response = await fetch(
-				// `https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}`,
-				url,
-			);
+			const response = await fetch(url);
 
 			const json = await response.json();
 			dispatch({
@@ -33,6 +49,7 @@ export const incrementPage =
 		if (currentPage === totalPage) {
 			return;
 		} else {
+			sessionStorage.setItem('page', String(currentPage + 1));
 			dispatch({type: TaskActionType.INCREMENT_PAGE});
 		}
 	};
@@ -42,6 +59,7 @@ export const decrementPage =
 		if (currentPage === 1) {
 			return;
 		} else {
+			sessionStorage.setItem('page', String(currentPage - 1));
 			dispatch({type: TaskActionType.DECREMENT_PAGE});
 		}
 	};
@@ -49,6 +67,8 @@ export const decrementPage =
 export const fetchSort =
 	(page: number, field: string, direction: string) =>
 	async (dispatch: Dispatch<TaskAction>) => {
+		sessionStorage.setItem('field', field);
+		sessionStorage.setItem('direction', direction);
 		try {
 			const response = await fetch(
 				`https://uxcandy.com/~shapoval/test-task-backend/v2/?developer=yura&page=${page}&sort_field=${field}&sort_direction=${direction}`,
@@ -62,27 +82,33 @@ export const fetchSort =
 				},
 			});
 			dispatch({type: TaskActionType.ACTIVE_SORT, payload: {field, direction}});
-			field === 'username' &&
-				direction === 'desc' &&
+			if (field === 'username' && direction === 'desc') {
 				dispatch({type: TaskActionType.NAME_ASC, payload: true});
-			field === 'username' &&
-				direction === 'asc' &&
+				sessionStorage.setItem('ascname', JSON.stringify(true));
+			}
+			if (field === 'username' && direction === 'asc') {
 				dispatch({type: TaskActionType.NAME_ASC, payload: false});
+				sessionStorage.setItem('ascname', JSON.stringify(false));
+			}
 
-			field === 'email' &&
-				direction === 'desc' &&
+			if (field === 'email' && direction === 'desc') {
 				dispatch({type: TaskActionType.EMAIL_ASC, payload: true});
+				sessionStorage.setItem('ascemail', JSON.stringify(true));
+			}
 
-			field === 'email' &&
-				direction === 'asc' &&
+			if (field === 'email' && direction === 'asc') {
 				dispatch({type: TaskActionType.EMAIL_ASC, payload: false});
+				sessionStorage.setItem('ascemail', JSON.stringify(false));
+			}
 
-			field === 'status' &&
-				direction === 'desc' &&
+			if (field === 'status' && direction === 'desc') {
 				dispatch({type: TaskActionType.STATUS_ASC, payload: true});
-			field === 'status' &&
-				direction === 'asc' &&
+				sessionStorage.setItem('ascstatus', JSON.stringify(true));
+			}
+			if (field === 'status' && direction === 'asc') {
 				dispatch({type: TaskActionType.STATUS_ASC, payload: false});
+				sessionStorage.setItem('ascstatus', JSON.stringify(false));
+			}
 		} catch (e) {
 			console.log((e as Error).message);
 		}
@@ -115,11 +141,23 @@ export const postCreateTask =
 				success: (data) => {
 					console.log(data);
 					if (data.status === 'error') {
+						const email = data.message.email
+							? `\n email: ${data.message.email}`
+							: '';
+						const text = data.message.text
+							? `\n text: ${data.message.text}`
+							: '';
+
+						const username = data.message.username
+							? `\n username: ${data.message.username}`
+							: '';
 						alert(
-							`email: ${data.message.email} text: ${data.message.text} username: ${data.message.username}`,
+							` ${email} ${text} ${username} \n Task create: ${data.status}`,
 						);
+					} else {
+						alert(`Task create: ${data.status}`);
+						dispatch({type: TaskActionType.TASK_EFFECT});
 					}
-					alert(`Task create: ${data.status}`);
 				},
 			});
 			dispatch({
@@ -133,6 +171,7 @@ export const postCreateTask =
 
 export const requiredPage =
 	(page: number) => (dispatch: Dispatch<TaskAction>) => {
+		sessionStorage.setItem('page', String(page));
 		dispatch({type: TaskActionType.REQUIRED_PAGE, payload: page});
 	};
 export const activeId =
@@ -179,31 +218,33 @@ export const changeStatus =
 		dispatch({type: TaskActionType.EDIT_STATUS, payload: status});
 	};
 
-export const postEditedTask = async (
-	text: string,
-	status: number,
-	token: string,
-	id: number,
-) => {
-	const formData = new FormData();
-	formData.append('text', text);
-	formData.append('status', String(status));
-	formData.append('token', token);
-	try {
-		$.ajax({
-			url: `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/${id}?developer=yura`,
-			crossDomain: true,
-			method: 'POST',
-			mimeType: 'multipart/form-data',
-			contentType: false,
-			processData: false,
-			data: formData,
-			dataType: 'json',
-			success: function (data) {
-				console.log(data);
-			},
-		});
-	} catch (e) {
-		console.log('Error ', (e as Error).message);
-	}
-};
+export const postEditedTask =
+	(text: string, status: number, id: number) =>
+	async (dispatch: Dispatch<AdminAction>) => {
+		const token = localStorage.getItem('token');
+		const formData = new FormData();
+		formData.append('text', text);
+		formData.append('status', String(status));
+		formData.append('token', String(token));
+		try {
+			$.ajax({
+				url: `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/${id}?developer=yura`,
+				crossDomain: true,
+				method: 'POST',
+				mimeType: 'multipart/form-data',
+				contentType: false,
+				processData: false,
+				data: formData,
+				dataType: 'json',
+				success: function (data) {
+					console.log(data);
+					if (data.status === 'error') {
+						alert(`${data.message.token} \n please log in`);
+						dispatch({type: AdminActionType.ADMIN_LOGIN, payload: false});
+					}
+				},
+			});
+		} catch (e) {
+			console.log('Error ', (e as Error).message);
+		}
+	};

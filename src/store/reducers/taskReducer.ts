@@ -3,6 +3,7 @@ import {TaskAction, TaskActionType, TaskState} from '../../types/task';
 const initialState: TaskState = {
 	currentPage: 1,
 	tasks: [],
+	taskEffect: false,
 	totalPage: 1,
 	totalTask: 1,
 	email: '',
@@ -80,6 +81,18 @@ export const taskReducer = (state = initialState, action: TaskAction) => {
 				...state,
 				sortDirection: action.payload.direction,
 				sortField: action.payload.field,
+			};
+		case TaskActionType.TASK_EFFECT:
+			return {...state, taskEffect: !state.taskEffect};
+		case TaskActionType.INITIAL_SESSION_STORAGE:
+			return {
+				...state,
+				sortField: action.payload.field,
+				sortDirection: action.payload.direction,
+				currentPage: action.payload.page,
+				ascEmail: action.payload.email,
+				ascName: action.payload.name,
+				ascStatus: action.payload.status,
 			};
 		default:
 			return state;

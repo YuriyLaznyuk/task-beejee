@@ -5,7 +5,6 @@ const defaultState: IAdmin = {
 	password: '',
 	username: '',
 	isAdmin: false,
-	token: '',
 };
 export const adminReducer = (state = defaultState, action: AdminAction) => {
 	switch (action.type) {
@@ -20,8 +19,7 @@ export const adminReducer = (state = defaultState, action: AdminAction) => {
 		case AdminActionType.ADMIN_LOGIN:
 			return {
 				...state,
-				token: action.payload.token,
-				isAdmin: action.payload.isAdmin,
+				isAdmin: action.payload,
 			};
 
 		default:

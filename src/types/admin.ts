@@ -3,7 +3,6 @@ export interface IAdmin {
 	username: string;
 	password: string;
 	isAdmin: boolean;
-	token: string;
 }
 export interface IAdminInput {
 	username: string;
@@ -17,10 +16,7 @@ export enum AdminActionType {
 
 export type AdminLogin = {
 	type: AdminActionType.ADMIN_LOGIN;
-	payload: {
-		isAdmin: boolean;
-		token: string;
-	};
+	payload: boolean;
 };
 export type AdminInput = {
 	type: AdminActionType.ADMIN_INPUT;
